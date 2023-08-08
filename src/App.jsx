@@ -8,7 +8,8 @@ juntamente com uma barra de progresso que altera-se conforme o usuário preenche
 
 * BARRA DE PROGRESSO
 Para aproveitar estilização já definida, crie:
-- a barra com um elemento pai chamado .bar-container e seu filho .bar
+1º comit
+- a barra com um elemento pai chamado .bar-container e seu filho .bar 
 
 * CAMPOS DO FORMULÁRIO:
 input - nome completo - válido se digitar no mínimo dois nomes,
@@ -37,37 +38,39 @@ do formulário e zerar a barra de progresso novamente.
 
 function App() {
   return (
-    <div className='App'>
+    <div className="App">
       <h3>desafio fernandev</h3>
       <h1>progresso do formulário</h1>
 
       <main>
-        {/* crie a barra de progresso aqui */}
-        <div className='form-group'>
-          <label htmlFor=''>Nome Completo</label>
+        <div className="bar-container">
+          <div className="bar"></div>
+        </div>
+        <div className="form-group">
+          <label htmlFor="">Nome Completo</label>
           <input />
         </div>
-        <div className='form-group'>
-          <label htmlFor=''>E-mail</label>
+        <div className="form-group">
+          <label htmlFor="">E-mail</label>
           <input />
         </div>
-        <div className='form-group'>
-          <label htmlFor=''>Estado Civil</label>
+        <div className="form-group">
+          <label htmlFor="">Estado Civil</label>
           <select>
-            <option value=''>- selecione...</option>
-            <option value='solteiro'>Solteiro</option>
-            <option value='casado'>Casado</option>
-            <option value='divorciado'>Divorciado</option>
+            <option value="">- selecione...</option>
+            <option value="solteiro">Solteiro</option>
+            <option value="casado">Casado</option>
+            <option value="divorciado">Divorciado</option>
           </select>
         </div>
-        <div className='form-group'>
-          <label htmlFor=''>Gênero</label>
-          <div className='radios-container'>
+        <div className="form-group">
+          <label htmlFor="">Gênero</label>
+          <div className="radios-container">
             <span>
-              <input type='radio' /> Masculino
+              <input type="radio" /> Masculino
             </span>
             <span>
-              <input type='radio' /> Feminino
+              <input type="radio" /> Feminino
             </span>
           </div>
         </div>
