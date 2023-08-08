@@ -39,7 +39,34 @@ do formulário e zerar a barra de progresso novamente.
 import { useState } from "react";
 
 function App() {
-  const [progress, setProgress] = useState(0);
+  const [progresso, setProgresso] = useState(0);
+  const [data, setData] = useState({
+    nome: "",
+    email: "",
+    estadoCivil: "",
+    genero: "",
+  });
+
+  const quandoUsuarioDigita = (valorDigitado, tipo) => {
+    if (tipo == "nome") {
+      setData({ ...data, nome: valorDigitado });
+    }
+    if (tipo == "email") {
+      setData({ ...data, email: valorDigitado });
+    }
+    if (tipo == "estadoCivil") {
+      setData({ ...data, estadoCivil: valorDigitado });
+    }
+    if (tipo == "genero") {
+      setData({ ...data, genero: valorDigitado });
+    }
+  };
+
+  const enviarFormuladio = (e) => {
+    e.preventDefault();
+    console.log(data);
+  };
+
   return (
     <div className="App">
       <h3>desafio fernandev</h3>
@@ -47,37 +74,63 @@ function App() {
 
       <main>
         <div className="bar-container">
-          <div className="bar" style={{ width: `${progress}%` }}></div>
+          <div className="bar" style={{ width: `${progresso}%` }}></div>
         </div>
-        <div className="form-group">
-          <label htmlFor="">Nome Completo</label>
-          <input />
-        </div>
-        <div className="form-group">
-          <label htmlFor="">E-mail</label>
-          <input />
-        </div>
-        <div className="form-group">
-          <label htmlFor="">Estado Civil</label>
-          <select>
-            <option value="">- selecione...</option>
-            <option value="solteiro">Solteiro</option>
-            <option value="casado">Casado</option>
-            <option value="divorciado">Divorciado</option>
-          </select>
-        </div>
-        <div className="form-group">
-          <label htmlFor="">Gênero</label>
-          <div className="radios-container">
-            <span>
-              <input type="radio" /> Masculino
-            </span>
-            <span>
-              <input type="radio" /> Feminino
-            </span>
+        <form onSubmit={enviarFormuladio}>
+          <div className="form-group">
+            <label htmlFor="">Nome Completo</label>
+            <input
+              placeholder="Digite seu nome!"
+              onChange={(e) => quandoUsuarioDigita(e.target.value, "nome")}
+            />
           </div>
-        </div>
-        <button>Enviar Formulário</button>
+          <div className="form-group">
+            <label htmlFor="">E-mail</label>
+            <input
+              placeholder="Digite seu email!"
+              onChange={(e) => quandoUsuarioDigita(e.target.value, "email")}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="">Estado Civil</label>
+            <select
+              onChange={(e) =>
+                quandoUsuarioDigita(e.target.value, "estadoCivil")
+              }
+            >
+              <option value="">- selecione...</option>
+              <option value="solteiro">Solteiro</option>
+              <option value="casado">Casado</option>
+              <option value="divorciado">Divorciado</option>
+            </select>
+          </div>
+          <div className="form-group">
+            <label htmlFor="">Gênero</label>
+            <div className="radios-container">
+              <span>
+                <input
+                  type="radio"
+                  value={"masculino"}
+                  onChange={(e) =>
+                    quandoUsuarioDigita(e.target.value, "genero")
+                  }
+                />
+                Masculino
+              </span>
+              <span>
+                <input
+                  type="radio"
+                  value={"feminino"}
+                  onChange={(e) =>
+                    quandoUsuarioDigita(e.target.value, "genero")
+                  }
+                />
+                Feminino
+              </span>
+            </div>
+          </div>
+          <button>Enviar Formulário</button>
+        </form>
       </main>
     </div>
   );
