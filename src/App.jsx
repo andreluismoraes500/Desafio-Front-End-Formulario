@@ -36,7 +36,10 @@ Ao enviar, deve-se apresentar um alert javascript com sucesso, limpar todos os c
 do formulário e zerar a barra de progresso novamente.
 */
 
+import { useState } from "react";
+
 function App() {
+  const [progress, setProgress] = useState(0);
   return (
     <div className="App">
       <h3>desafio fernandev</h3>
@@ -44,7 +47,7 @@ function App() {
 
       <main>
         <div className="bar-container">
-          <div className="bar"></div>
+          <div className="bar" style={{ width: `${progress}%` }}></div>
         </div>
         <div className="form-group">
           <label htmlFor="">Nome Completo</label>
