@@ -40,6 +40,7 @@ import { useState } from "react";
 
 function App() {
   const [progresso, setProgresso] = useState(0);
+  const [habilitarBotaoEnviar, setHabilitarBotaoEnviar] = useState(true);
   const [data, setData] = useState({
     nome: "",
     email: "",
@@ -60,11 +61,46 @@ function App() {
     if (tipo == "genero") {
       setData({ ...data, genero: valorDigitado });
     }
+
+    validarFormulario();
+  };
+
+  const validarFormulario = () => {
+    let { nome, email, estadoCivil, genero } = data;
+    let partesValidas = 0;
+    let separarNome = nome.replace(/\s+/g, " ").split(" ");
+
+    //Object.keys(data).length;
+
+    let validarEmail = new RegExp(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
+
+    if (separarNome.length >= 2) {
+      partesValidas++;
+    } else {
+      partesValidas--;
+    }
+
+    if (validarEmail.test(email)) {
+      partesValidas++;
+    }
+
+    if (estadoCivil !== "") {
+      partesValidas++;
+    }
+
+    if (genero !== "") {
+      partesValidas++;
+    }
+
+    console.log(partesValidas);
+    setProgresso(partesValidas * 25);
   };
 
   const enviarFormuladio = (e) => {
     e.preventDefault();
-    console.log(data);
+    validarFormulario();
   };
 
   return (
@@ -129,7 +165,7 @@ function App() {
               </span>
             </div>
           </div>
-          <button>Enviar Formulário</button>
+          <button disabled={habilitarBotaoEnviar}>Enviar Formulário</button>
         </form>
       </main>
     </div>
