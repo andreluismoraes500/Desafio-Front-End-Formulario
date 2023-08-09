@@ -36,7 +36,7 @@ Ao enviar, deve-se apresentar um alert javascript com sucesso, limpar todos os c
 do formulário e zerar a barra de progresso novamente.
 */
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
   const [progresso, setProgresso] = useState(0);
@@ -48,60 +48,49 @@ function App() {
     genero: "",
   });
 
-  const quandoUsuarioDigita = (valorDigitado, tipo) => {
-    if (tipo == "nome") {
-      setData({ ...data, nome: valorDigitado });
-    }
-    if (tipo == "email") {
-      setData({ ...data, email: valorDigitado });
-    }
-    if (tipo == "estadoCivil") {
-      setData({ ...data, estadoCivil: valorDigitado });
-    }
-    if (tipo == "genero") {
-      setData({ ...data, genero: valorDigitado });
-    }
-
-    validarFormulario();
-  };
-
   const validarFormulario = () => {
-    let { nome, email, estadoCivil, genero } = data;
-    let partesValidas = 0;
-    let separarNome = nome.replace(/\s+/g, " ").split(" ");
+    const { nome, email, estadoCivil, genero } = data;
 
-    //Object.keys(data).length;
+    const separarNome = nome.replace(/\s+/g, " ").split(" ");
+    const validouNome = separarNome.length >= 2 && separarNome[1] !== "";
+    const validouEmail =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+        email
+      );
+    const validouEstadoCivil = estadoCivil !== "";
+    const validouGenero = genero !== "";
 
-    let validarEmail = new RegExp(
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    );
+    const progressoCalculado =
+      (validouNome + validouEmail + validouEstadoCivil + validouGenero) * 25;
 
-    if (separarNome.length >= 2) {
-      partesValidas++;
-    } else {
-      partesValidas--;
-    }
-
-    if (validarEmail.test(email)) {
-      partesValidas++;
-    }
-
-    if (estadoCivil !== "") {
-      partesValidas++;
-    }
-
-    if (genero !== "") {
-      partesValidas++;
-    }
-
-    console.log(partesValidas);
-    setProgresso(partesValidas * 25);
+    setProgresso(progressoCalculado);
+    setHabilitarBotaoEnviar(progressoCalculado !== 100);
   };
 
-  const enviarFormuladio = (e) => {
-    e.preventDefault();
+  useEffect(() => {
     validarFormulario();
+  }, [data]);
+
+  const quandoUsuarioDigita = (valorDigitado, tipo) => {
+    setData({ ...data, [tipo]: valorDigitado });
   };
+
+  const enviarFormulario = (e) => {
+    e.preventDefault();
+    alert("Formulário enviado com sucesso!");
+    setData({
+      nome: "",
+      email: "",
+      estadoCivil: "",
+      genero: "",
+    });
+
+    setProgresso(0);
+  };
+
+  useEffect(() => {
+    validarFormulario();
+  }, [data.nome, data.email, data.estadoCivil, data.genero]);
 
   return (
     <div className="App">
@@ -112,7 +101,7 @@ function App() {
         <div className="bar-container">
           <div className="bar" style={{ width: `${progresso}%` }}></div>
         </div>
-        <form onSubmit={enviarFormuladio}>
+        <form onSubmit={enviarFormulario}>
           <div className="form-group">
             <label htmlFor="">Nome Completo</label>
             <input
@@ -145,6 +134,7 @@ function App() {
             <div className="radios-container">
               <span>
                 <input
+                  name="genero"
                   type="radio"
                   value={"masculino"}
                   onChange={(e) =>
@@ -155,6 +145,7 @@ function App() {
               </span>
               <span>
                 <input
+                  name="genero"
                   type="radio"
                   value={"feminino"}
                   onChange={(e) =>
